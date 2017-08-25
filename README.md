@@ -1,4 +1,5 @@
 # Locator
+
 ## Description
 
 This script is used for server collecting and identification. You can use this script to locate your server, located in which building and even in which U.
@@ -6,6 +7,7 @@ This script is used for server collecting and identification. You can use this s
 A wireless scanner is strongly recommend for this project.
 
 ## Usage
+
 You need to edit your source file including server iLO IP and position in folder "`total`" and make sure you have  CSV file including SN and iLO IP in folder "`CSV`".
 
 You can run this script after you set everything good.
@@ -24,7 +26,11 @@ You can entering debug mode by:
 
 `SN number is optional.`
 
-## ErrorCode
+You can clear logs by:
+
+> ./locator.sh cleanlog
+
+## Error Code
 
 `404`: No iLO address matched.
 
@@ -46,6 +52,6 @@ Lingxi - i@lingxi.de
 ## License
 BY-NC-SA
 
-## ChangeLog
+## Change Log
 **2017/08/25**   The very first upload, but verified by 1.5k servers proving everything runs good.
 

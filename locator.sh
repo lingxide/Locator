@@ -75,17 +75,17 @@ search(){
 
 	### Debug Module START ###
 	if [ "$DEBUG" = "ON" ]; then
-	echo -e "Now read the iLO address: \n\n `cat csv/*.csv | grep -w '^'$DEBUG_SN | sort | uniq | awk -F "," '{print $5}'` \n"
-	DEBUG_ILO=`cat csv/*.csv | awk -F "," '{print $1,$5}' | grep -w '^'$DEBUG_SN | sort | uniq | awk '{print $2}'`
+	echo -e "Now read the iLO address: \n\n `cat csv/*.csv | grep -w '^'$DEBUG_SN | sort | uniq | awk -F "," '{print $5}'` \n"  # iLO Column in CSV
+	DEBUG_ILO=`cat csv/*.csv | awk -F "," '{print $1,$5}' | grep -w '^'$DEBUG_SN | sort | uniq | awk '{print $2}'`  # SN Column and iLO Column in CSV
 	echo -e "iLO Total: `cat csv/*.csv | grep -w '^'$DEBUG_SN | sort | wc -l` \n"
 	if [ -n "$DEBUG_ILO" ]; then
 	echo -e "Debug iLO: $DEBUG_ILO\n"
-	echo -e "Now read the position: \n\n`cat $TOTALFILE | grep -w $DEBUG_ILO |awk '{print $2}' | sort | uniq` \n"
-	echo -e "Position Total: `cat $TOTALFILE | grep -w $DEBUG_ILO |awk '{print $2}' |sort | uniq | wc -l` \n"
+	echo -e "Now read the position: \n\n`cat $TOTALFILE | grep -w $DEBUG_ILO |awk '{print $2}' | sort | uniq` \n"  # Position Column in TOTALFILE
+	echo -e "Position Total: `cat $TOTALFILE | grep -w $DEBUG_ILO |awk '{print $2}' |sort | uniq | wc -l` \n"  # Same as above
 	else
 	echo -e "DEBUG_ILO is \"$DEBUG_ILO\", which is invaild."
 	fi
-	echo -e "Now read the Building: \n\n`cat $TOTALFILE | grep -w $DEBUG_ILO |awk '{print $3}'` \n"
+	echo -e "Now read the Building: \n\n`cat $TOTALFILE | grep -w $DEBUG_ILO |awk '{print $3}'` \n"  # Building Column in TOTALFILE
 	exit
 	fi
 	### Debug Module END ###
@@ -107,12 +107,12 @@ search(){
 	elif  [ `cat csv/*.csv | grep -w '^'$SN | sort | uniq | wc -l` -gt "1" ]; then
 	throwerror 500;
 	fi
-	ILO=`cat csv/*.csv | grep -w '^'$SN | sort | uniq | awk -F "," '{print $5}'`  #Read *.csv from HPe Provided List
+	ILO=`cat csv/*.csv | grep -w '^'$SN | sort | uniq | awk -F "," '{print $5}'`  # Read *.csv from HPe Provided List, iLO Column
 	[[ -z "$ILO"  ]] && throwerror 404;
 	#Read Building here
-	BUILDING=`cat $TOTALFILE | grep -w $ILO |awk '{print $3}'`
+	BUILDING=`cat $TOTALFILE | grep -w $ILO |awk '{print $3}'`  # Building Column
 	#Read Position here
-	POS=`cat $TOTALFILE | grep -w $ILO |awk '{print $2}' | sort | uniq`
+	POS=`cat $TOTALFILE | grep -w $ILO |awk '{print $2}' | sort | uniq` # Position Column
 	if [ `echo $POS | wc -l` != "1" ]; then
 	throwerror 503
 	fi

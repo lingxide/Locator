@@ -20,4 +20,4 @@
   
                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  
-                          VIVO 服务器入库系统
+                       XX Company Server Locator System

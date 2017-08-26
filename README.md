@@ -61,4 +61,5 @@ BY-NC-SA
 
 ## Change Log
 **2017/08/25**   The very first upload, but verified by 1.5k servers proving everything runs good.
+
 **2017/08/26**   Rebuild with awk part so that you can define column in sheets.

@@ -1,6 +1,7 @@
 #!/bin/bash
 init(){
 	###Please modify the following settings###
+
 	TOTALFILE="total/*";
 	BANNER="banner.txt";
 	DEBUG="OFF";
@@ -9,6 +10,7 @@ init(){
 	SN_COL='1';   # Define SN number in which column from CSV files
 	POS_COL='2';  # Define Server position information from total files
 	BUILDING_COL='3';   # Define Server in which building from total files
+
 	###Please modify the above settings###
 
 	DATE=`date --rfc-3339=date`;  # Define Date format 

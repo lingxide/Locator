@@ -148,7 +148,6 @@ throwerror(){
 	503) echo -e "\e[41m[Critical]\e[40m Err code: 503 \nMultiple Position matched.\n" &&quit;;
 	*) echo -e  "Unknown Error." && debug;;
 	esac
-	echo "Test"
 }
 quit(){
 	if [ ! -f log-$DATE.csv ]; then

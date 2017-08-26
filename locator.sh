@@ -5,7 +5,7 @@ init(){
 	BANNER="banner.txt";
 	DEBUG="OFF";
 	DEBUG_SN="6CU7315YB8";
-	ILO_COL='5';  # Define iLO address information in which column from both sheets
+	IPMI_COL='5';  # Define IPMI address information in which column from both sheets
 	SN_COL='1';   # Define SN number in which column from CSV files
 	POS_COL='2';  # Define Server position information from total files
 	BUILDING_COL='3';   # Define Server in which building from total files
@@ -68,7 +68,7 @@ cleanlog(){
 showlog(){
 	echo -e "\nDisplaying log on $DATE\n"
 	if [ -f log-$DATE.csv ]; then
-	cat log-$DATE.csv | sort | awk -F "," ' BEGIN {i=0} {i++; print i, "\tServer SN:"$1"\t iLO IP:"$2"\t Rack Position:"$3} END {print "\nTotal: "i "\n"}'
+	cat log-$DATE.csv | sort | awk -F "," ' BEGIN {i=0} {i++; print i, "\tServer SN:"$1"\t IPMI IP:"$2"\t Rack Position:"$3} END {print "\nTotal: "i "\n"}'
 	else
 	echo -e "No Logs Available."
 	fi
@@ -79,17 +79,17 @@ search(){
 
 	### Debug Module START ###
 	if [ "$DEBUG" = "ON" ]; then
-	echo -e "Now read the iLO address: \n\n `cat csv/*.csv | grep -w '^'$DEBUG_SN | sort | uniq | awk -v ILO_COL="$ILO_COL" -F "," '{print $ILO_COL}'` \n"  # iLO Column in CSV
-	DEBUG_ILO=`cat csv/*.csv | awk -v SN_COL="$SN_COL" -v ILO_COL="$ILO_COL" -F "," '{print $SN_COL,$ILO_COL}' | grep -w '^'$DEBUG_SN | sort | uniq | awk '{print $2}'`  # SN Column and iLO Column in CSV
-	echo -e "iLO Total: `cat csv/*.csv | grep -w '^'$DEBUG_SN | sort | wc -l` \n"
-	if [ -n "$DEBUG_ILO" ]; then
-	echo -e "Debug iLO: $DEBUG_ILO\n"
-	echo -e "Now read the position: \n\n`cat $TOTALFILE | grep -w $DEBUG_ILO |awk -v POS_COL="$POS_COL" '{print $POS_COL}' | sort | uniq` \n"  # Position Column in TOTALFILE
-	echo -e "Position Total: `cat $TOTALFILE | grep -w $DEBUG_ILO |awk -v POS_COL="$POS_COL" '{print $POS_COL}' |sort | uniq | wc -l` \n"  # Same as above
+	echo -e "Now read the IPMI address: \n\n `cat csv/*.csv | grep -w '^'$DEBUG_SN | sort | uniq | awk -v IPMI_COL="$IPMI_COL" -F "," '{print $IPMI_COL}'` \n"  # IPMI Column in CSV
+	DEBUG_IPMI=`cat csv/*.csv | awk -v SN_COL="$SN_COL" -v IPMI_COL="$IPMI_COL" -F "," '{print $SN_COL,$IPMI_COL}' | grep -w '^'$DEBUG_SN | sort | uniq | awk '{print $2}'`  # SN Column and IPMI Column in CSV
+	echo -e "IPMI Total: `cat csv/*.csv | grep -w '^'$DEBUG_SN | sort | wc -l` \n"
+	if [ -n "$DEBUG_IPMI" ]; then
+	echo -e "Debug IPMI: $DEBUG_IPMI\n"
+	echo -e "Now read the position: \n\n`cat $TOTALFILE | grep -w $DEBUG_IPMI |awk -v POS_COL="$POS_COL" '{print $POS_COL}' | sort | uniq` \n"  # Position Column in TOTALFILE
+	echo -e "Position Total: `cat $TOTALFILE | grep -w $DEBUG_IPMI |awk -v POS_COL="$POS_COL" '{print $POS_COL}' |sort | uniq | wc -l` \n"  # Same as above
 	else
-	echo -e "DEBUG_ILO is \"$DEBUG_ILO\", which is invaild."
+	echo -e "DEBUG_IPMI is \"$DEBUG_IPMI\", which is invaild."
 	fi
-	echo -e "Now read the Building: \n\n`cat $TOTALFILE | grep -w $DEBUG_ILO |awk -v BUILDING_COL="$BUILDING_COL" '{print $BUILDING_COL}'` \n"  # Building Column in TOTALFILE
+	echo -e "Now read the Building: \n\n`cat $TOTALFILE | grep -w $DEBUG_IPMI |awk -v BUILDING_COL="$BUILDING_COL" '{print $BUILDING_COL}'` \n"  # Building Column in TOTALFILE
 	exit
 	fi
 	### Debug Module END ###
@@ -105,18 +105,18 @@ search(){
 	elif [ "$SN" = "q!" ]; then
 	echo -e "Quit without saving..." && exit
 	else
-	#Read iLO address here
+	#Read IPMI address here
 	if [ `cat csv/*.csv | grep -w '^'$SN | sort | uniq | wc -l` -eq "0" ]; then
 	throwerror 501;
 	elif  [ `cat csv/*.csv | grep -w '^'$SN | sort | uniq | wc -l` -gt "1" ]; then
 	throwerror 500;
 	fi
-	ILO=`cat csv/*.csv | grep -w '^'$SN | sort | uniq | awk -v ILO_COL="$ILO_COL" -F "," '{print $ILO_COL}'`  # Read *.csv from HPe Provided List, iLO Column
-	[[ -z "$ILO"  ]] && throwerror 404;
+	IPMI=`cat csv/*.csv | grep -w '^'$SN | sort | uniq | awk -v IPMI_COL="$IPMI_COL" -F "," '{print $IPMI_COL}'`  # Read *.csv from HPe Provided List, IPMI Column
+	[[ -z "$IPMI"  ]] && throwerror 404;
 	#Read Building here
-	BUILDING=`cat $TOTALFILE | grep -w $ILO |awk -v ILO_COL="$ILO_COL" '{print $BUILDING_COL}'`  # Building Column
+	BUILDING=`cat $TOTALFILE | grep -w $IPMI |awk -v IPMI_COL="$IPMI_COL" '{print $BUILDING_COL}'`  # Building Column
 	#Read Position here
-	POS=`cat $TOTALFILE | grep -w $ILO |awk -v POS_COL="$POS_COL" '{print $POS_COL}' | sort | uniq` # Position Column
+	POS=`cat $TOTALFILE | grep -w $IPMI |awk -v POS_COL="$POS_COL" '{print $POS_COL}' | sort | uniq` # Position Column
 	if [ `echo $POS | wc -l` != "1" ]; then
 	throwerror 503
 	fi
@@ -128,18 +128,18 @@ output(){
 	#clear
 	printf "\n
 	SN:$SN \n\n
-	iLO:$ILO \n\n
+	IPMI:$IPMI \n\n
 	Position:$POS\n\n
 	Building:$BUILDING
 	"
-	echo "$SN,$ILO,$POS,$BUILDING" | tee >> log-$DATE.tmp  #Log to tmp file
+	echo "$SN,$IPMI,$POS,$BUILDING" | tee >> log-$DATE.tmp  #Log to tmp file
 	SN=""
 	search
 }
 throwerror(){
 	case "$1" in
-	404) echo -e "\e[41m[Critical]\e[40m Err code: 404 \nNo iLO address matched.\n " && quit;;  #When this occured, it means fatal error in goods list
-	400) echo -e "\e[41m[Critical]\e[40m Err code: 400 \nNo Position matched.\n" &&quit;;  #When this happened, it means the iLO has no match to position
+	404) echo -e "\e[41m[Critical]\e[40m Err code: 404 \nNo IPMI address matched.\n " && quit;;  #When this occured, it means fatal error in goods list
+	400) echo -e "\e[41m[Critical]\e[40m Err code: 400 \nNo Position matched.\n" &&quit;;  #When this happened, it means the IPMI has no match to position
 	500) echo -e "\e[41m[Warning]\e[40m Err code: 500 \nConflict content.\n" 
 	     echo -e "Current SN: $SN\nConflict SN:"
 	     echo `cat csv/*.csv | grep -xF $SN `

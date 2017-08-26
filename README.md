@@ -2,7 +2,7 @@
 
 ## Description
 
-This script is used for server collecting and identification. You can use this script to locate your server, located in which building and even in which U.
+This script is used for server collecting and identification. You can use this script to locate your server, located in which building and even in which rack.
 
 A wireless scanner is strongly recommend for this project.
 
@@ -10,12 +10,12 @@ A wireless scanner is strongly recommend for this project.
 
 You need two sheets:
 
-- A: Sheet have SN number and **iLO address**.
-- B: Sheet have **iLO address** and server position information.
+- A: Sheet have SN number and **IPMI address**.
+- B: Sheet have **IPMI address** and server position information.
 
 ## Usage
 
-You need to edit your source file including server iLO IP and position in folder "`total`" and make sure you have  CSV file including SN and iLO IP in folder "`CSV`".
+You need to edit your source file including server IPMI IP and position in folder "`total`" and make sure you have  CSV file including SN and IPMI IP in folder "`CSV`".
 
 You can run this script after you set everything good.
 
@@ -39,7 +39,7 @@ You can clear logs by:
 
 ## Error Code
 
-`404`: No iLO address matched.
+`404`: No IPMI address matched.
 
 `400`: No Position matched.
 

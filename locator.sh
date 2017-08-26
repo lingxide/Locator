@@ -4,7 +4,7 @@ init(){
 	TOTALFILE="total/*";
 	BANNER="banner.txt";
 	DEBUG="OFF";
-	DEBUG_SN="6CU7316LAY";
+	DEBUG_SN="6CU7315YB8";
 	ILO_COL='5';  # Define iLO address information in which column from both sheets
 	SN_COL='1';   # Define SN number in which column from CSV files
 	POS_COL='2';  # Define Server position information from total files

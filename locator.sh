@@ -5,6 +5,10 @@ init(){
 	BANNER="banner.txt";
 	DEBUG="OFF";
 	DEBUG_SN="6CU7316LAY";
+	ILO_COL='5';  # Define iLO address information in which column from both sheets
+	SN_COL='1';   # Define SN number in which column from CSV files
+	POS_COL='2';  # Define Server position information from total files
+	BUILDING_COL='3';   # Define Server in which building from total files
 	###Please modify the above settings###
 
 	DATE=`date --rfc-3339=date`;  # Define Date format 
@@ -75,17 +79,17 @@ search(){
 
 	### Debug Module START ###
 	if [ "$DEBUG" = "ON" ]; then
-	echo -e "Now read the iLO address: \n\n `cat csv/*.csv | grep -w '^'$DEBUG_SN | sort | uniq | awk -F "," '{print $5}'` \n"  # iLO Column in CSV
-	DEBUG_ILO=`cat csv/*.csv | awk -F "," '{print $1,$5}' | grep -w '^'$DEBUG_SN | sort | uniq | awk '{print $2}'`  # SN Column and iLO Column in CSV
+	echo -e "Now read the iLO address: \n\n `cat csv/*.csv | grep -w '^'$DEBUG_SN | sort | uniq | awk -v ILO_COL="$ILO_COL" -F "," '{print $ILO_COL}'` \n"  # iLO Column in CSV
+	DEBUG_ILO=`cat csv/*.csv | awk -v SN_COL="$SN_COL" -v ILO_COL="$ILO_COL" -F "," '{print $SN_COL,$ILO_COL}' | grep -w '^'$DEBUG_SN | sort | uniq | awk '{print $2}'`  # SN Column and iLO Column in CSV
 	echo -e "iLO Total: `cat csv/*.csv | grep -w '^'$DEBUG_SN | sort | wc -l` \n"
 	if [ -n "$DEBUG_ILO" ]; then
 	echo -e "Debug iLO: $DEBUG_ILO\n"
-	echo -e "Now read the position: \n\n`cat $TOTALFILE | grep -w $DEBUG_ILO |awk '{print $2}' | sort | uniq` \n"  # Position Column in TOTALFILE
-	echo -e "Position Total: `cat $TOTALFILE | grep -w $DEBUG_ILO |awk '{print $2}' |sort | uniq | wc -l` \n"  # Same as above
+	echo -e "Now read the position: \n\n`cat $TOTALFILE | grep -w $DEBUG_ILO |awk -v POS_COL="$POS_COL" '{print $POS_COL}' | sort | uniq` \n"  # Position Column in TOTALFILE
+	echo -e "Position Total: `cat $TOTALFILE | grep -w $DEBUG_ILO |awk -v POS_COL="$POS_COL" '{print $POS_COL}' |sort | uniq | wc -l` \n"  # Same as above
 	else
 	echo -e "DEBUG_ILO is \"$DEBUG_ILO\", which is invaild."
 	fi
-	echo -e "Now read the Building: \n\n`cat $TOTALFILE | grep -w $DEBUG_ILO |awk '{print $3}'` \n"  # Building Column in TOTALFILE
+	echo -e "Now read the Building: \n\n`cat $TOTALFILE | grep -w $DEBUG_ILO |awk -v BUILDING_COL="$BUILDING_COL" '{print $BUILDING_COL}'` \n"  # Building Column in TOTALFILE
 	exit
 	fi
 	### Debug Module END ###
@@ -107,12 +111,12 @@ search(){
 	elif  [ `cat csv/*.csv | grep -w '^'$SN | sort | uniq | wc -l` -gt "1" ]; then
 	throwerror 500;
 	fi
-	ILO=`cat csv/*.csv | grep -w '^'$SN | sort | uniq | awk -F "," '{print $5}'`  # Read *.csv from HPe Provided List, iLO Column
+	ILO=`cat csv/*.csv | grep -w '^'$SN | sort | uniq | awk -v ILO_COL="$ILO_COL" -F "," '{print $ILO_COL}'`  # Read *.csv from HPe Provided List, iLO Column
 	[[ -z "$ILO"  ]] && throwerror 404;
 	#Read Building here
-	BUILDING=`cat $TOTALFILE | grep -w $ILO |awk '{print $3}'`  # Building Column
+	BUILDING=`cat $TOTALFILE | grep -w $ILO |awk -v ILO_COL="$ILO_COL" '{print $BUILDING_COL}'`  # Building Column
 	#Read Position here
-	POS=`cat $TOTALFILE | grep -w $ILO |awk '{print $2}' | sort | uniq` # Position Column
+	POS=`cat $TOTALFILE | grep -w $ILO |awk -v POS_COL="$POS_COL" '{print $POS_COL}' | sort | uniq` # Position Column
 	if [ `echo $POS | wc -l` != "1" ]; then
 	throwerror 503
 	fi

@@ -6,6 +6,13 @@ This script is used for server collecting and identification. You can use this s
 
 A wireless scanner is strongly recommend for this project.
 
+## Dependency
+
+You need two sheets:
+
+- A: Sheet have SN number and **iLO address**.
+- B: Sheet have **iLO address** and server position information.
+
 ## Usage
 
 You need to edit your source file including server iLO IP and position in folder "`total`" and make sure you have  CSV file including SN and iLO IP in folder "`CSV`".
@@ -54,4 +61,4 @@ BY-NC-SA
 
 ## Change Log
 **2017/08/25**   The very first upload, but verified by 1.5k servers proving everything runs good.
-
+**2017/08/26**   Rebuild with awk part so that you can define column in sheets.

@@ -116,7 +116,7 @@ search(){
 	IPMI=`cat csv/*.csv | grep -w '^'$SN | sort | uniq | awk -v IPMI_COL="$IPMI_COL" -F "," '{print $IPMI_COL}'`  # Read *.csv from HPe Provided List, IPMI Column
 	[[ -z "$IPMI"  ]] && throwerror 404;
 	#Read Building here
-	BUILDING=`cat $TOTALFILE | grep -w $IPMI |awk -v IPMI_COL="$IPMI_COL" '{print $BUILDING_COL}'`  # Building Column
+	BUILDING=`cat $TOTALFILE | grep -w $IPMI |awk -v BUILDING_COL="$BUILDING_COL" '{print $BUILDING_COL}'`  # Building Column
 	#Read Position here
 	POS=`cat $TOTALFILE | grep -w $IPMI |awk -v POS_COL="$POS_COL" '{print $POS_COL}' | sort | uniq` # Position Column
 	if [ `echo $POS | wc -l` != "1" ]; then

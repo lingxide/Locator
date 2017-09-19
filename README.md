@@ -21,13 +21,13 @@ You can run this script after you set everything good.
 
 > ./locator.sh
 
-You can quit by typeing `q` to save and quit or typeing `q!` to save without saving.
+You can quit by typeing `q` to save and quit or typeing `q!` to quit without saving.
 
 You can see what you logged in a day by:
 
 > ./locator.sh showlog
 
-You can entering debug mode by:
+You can enter debug mode by:
 
 > ./locator.sh debug [SN number]
 

@@ -6,7 +6,7 @@ This script is used for server collecting and identification. You can use this s
 
 A wireless scanner is strongly recommend for this project.
 
-## Dependency
+## Dependence
 
 You need two sheets:
 

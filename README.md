@@ -10,8 +10,8 @@ A wireless scanner is strongly recommend for this project.
 
 You need two sheets:
 
-- A: Sheet have SN number and **IPMI address**.
-- B: Sheet have **IPMI address** and server position information.
+- A: Sheets have SN number and **IPMI address**.
+- B: Sheets have **IPMI address** and server position information.
 
 ## Usage
 
@@ -21,7 +21,7 @@ You can run this script after you set everything good.
 
 > ./locator.sh
 
-You can quit by typeing `q` to save and quit or typeing `q!` to quit without saving.
+You can quit by typing `q` to save and quit or typing `q!` to quit without saving.
 
 You can see what you logged in a day by:
 
